@@ -7,11 +7,11 @@ require 'rubygems'
 require 'less'
 
 begin
-  require 'growl'
+  require 'notification'
 rescue LoadError
-  Less::GROWL = false
+  Less::NOTIFY = false
 else
-  Less::GROWL = true
+  Less::NOTIFY = true
 end
 
 # Argument defaults
@@ -36,9 +36,9 @@ opts = OptionParser.new do |o|
 
   # Growl
   o.on("-g", "--growl", "growl notifications") do
-    if Less::GROWL && (Growl.installed? rescue false)
+    if Less::NOTIFY && (Notifier.installed? rescue false)
       options[:growl] = true
-    elsif Less::GROWL
+    elsif Less::NOTIFY
       abort "Growl or 'growlnotify' wasn't found on your system."
     else
       abort "Growl gem not found, please install with: " +

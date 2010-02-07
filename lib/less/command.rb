@@ -64,7 +64,8 @@ module Less
 
         act, file = (new ? 'Created' : 'Updated'), @destination.split('/').last
         print "#{o("* #{act}", :green)} #{file}\n: " if watch?
-        Growl.notify "#{act} #{file}", :title => 'LESS' if @options[:growl] && @options[:verbose]
+        # Growl.notify "#{act} #{file}", :title => 'LESS' if @options[:growl] && @options[:verbose]
+        Notifier.notify "#{act} #{file}", :title => 'LESS' if @options[:growl] && @options[:verbose]
       rescue Errno::ENOENT => e
         abort "#{e}"
       rescue SyntaxError => e
@@ -93,10 +94,7 @@ module Less
       type = type.strip + ' ' unless type.empty?
       $stderr.print "#{o("! #{type}Error", :red)}: #{s}"
       if @options[:growl]
-        growl = Growl.new
-        growl.title = "LESS"
-        growl.message = "#{type}Error in #@source!"
-        growl.run
+        Notifier.notify "#{type}Error in #@source!", :title => "LESS"
         false
       end
     end
